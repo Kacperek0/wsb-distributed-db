@@ -12,13 +12,13 @@ mkdir -p nodes/atlantic nodes/pacific nodes/indian
 # Czyczenie DataDirectory bez kopii zapasowej bo nie boimy się niczego :)
 
 rm -rf nodes/atlantic/
-pg_basebackup -h 10.0.0.2 -D nodes/atlantic -P -U replication --slot=slot1
+pg_basebackup -h 10.0.2.4 -D nodes/atlantic -P -U replication --slot=slot1
 
 rm -rf nodes/pacific/
-pg_basebackup -h 10.0.0.3 -D nodes/atlantic -P -U replication --slot=slot1
+pg_basebackup -h 10.0.2.5 -D nodes/pacific -P -U replication --slot=slot1
 
 rm -rf nodes/indian/
-pg_basebackup -h 10.0.0.4 -D nodes/atlantic -P -U replication --slot=slot1
+pg_basebackup -h 10.0.2.7 -D nodes/indian -P -U replication --slot=slot1
 
 # Zmiana portów w plikach konfiguracyjnych Postgresa dla kadego z node'ów
 
@@ -29,17 +29,17 @@ echo "port = 5435" >> nodes/indian/postgresql.conf
 # Konfiguracja standby node'ów
 
 echo "hot_standby = on" >> nodes/atlantic/postgresql.conf
-echo "primary_conninfo = 'host=10.0.0.2 port=5432 user=replication password=replication'" >> nodes/atlantic/postgresql.conf
+echo "primary_conninfo = 'host=10.0.2.4 port=5432 user=replication password=replication'" >> nodes/atlantic/postgresql.conf
 echo "primary_slot_name = 'slot1'" >> nodes/atlantic/postgresql.conf
 touch nodes/atlantic/standby.signal
 
 echo "hot_standby = on" >> nodes/pacific/postgresql.conf
-echo "primary_conninfo = 'host=10.0.0.3 port=5432 user=replication password=replication'" >> nodes/pacific/postgresql.conf
+echo "primary_conninfo = 'host=10.0.2.5 port=5432 user=replication password=replication'" >> nodes/pacific/postgresql.conf
 echo "primary_slot_name = 'slot1'" >> nodes/pacific/postgresql.conf
 touch nodes/pacific/standby.signal
 
 echo "hot_standby = on" >> nodes/indian/postgresql.conf
-echo "primary_conninfo = 'host=10.0.0.4 port=5432 user=replication password=replication'" >> nodes/indian/postgresql.conf
+echo "primary_conninfo = 'host=10.0.2.7 port=5432 user=replication password=replication'" >> nodes/indian/postgresql.conf
 echo "primary_slot_name = 'slot1'" >> nodes/indian/postgresql.conf
 touch nodes/indian/standby.signal
 
