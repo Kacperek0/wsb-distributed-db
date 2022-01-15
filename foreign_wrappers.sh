@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Uruchomienie 'głównej' bazy danych
 /usr/pgsql-13/bin/pg_ctl -D /var/lib/pgsql/13/data start
 

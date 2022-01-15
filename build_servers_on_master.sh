@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Tworzenie i uruchomienie 3 node'ów PostgreSQL na serwerze w centrali
 
 # Tworzenie katalogów i tworzenie DataDirectory dla kazdego node'a
